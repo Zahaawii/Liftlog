@@ -272,7 +272,8 @@ Recommended environments:
 
 Deployment concerns:
 
-- Database migrations should be introduced before implementation begins.
+- Milestone 1 initializes the auth schema with Spring SQL initialization so local, test, and Docker environments can start consistently.
+- Formal database migration tooling should be introduced before expanding beyond the Milestone 1 auth schema.
 - Production secrets must not be committed.
 - Health checks should cover backend availability and database connectivity.
 - OpenAI credentials must come from environment variables.

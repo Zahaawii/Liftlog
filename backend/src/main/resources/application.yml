@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: liftlogai-backend
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/liftlogai?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    username: ${DB_USERNAME:liftlogai}
+    password: ${DB_PASSWORD:liftlogai}
+  sql:
+    init:
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+server:
+  port: ${SERVER_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  level:
+    root: INFO
+    com.liftlogai: INFO
+    org.springframework.security: INFO
+
+liftlog:
+  auth:
+    issuer: liftlogai
+    token-secret: ${LIFTLOG_AUTH_TOKEN_SECRET:local-development-secret-change-before-production-1234567890}
+    access-token-minutes: 15
+    refresh-token-days: 7
+    cookie-secure: ${LIFTLOG_COOKIE_SECURE:true}
+    cookie-same-site: ${LIFTLOG_COOKIE_SAME_SITE:Lax}
+    access-cookie-name: liftlog_access
+    refresh-cookie-name: liftlog_refresh
+    csrf-cookie-name: XSRF-TOKEN
+    csrf-header-name: X-XSRF-TOKEN

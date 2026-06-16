@@ -1,0 +1,44 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: liftlogai
+      MYSQL_USER: liftlogai
+      MYSQL_PASSWORD: liftlogai
+      MYSQL_ROOT_PASSWORD: liftlogai_root
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pliftlogai_root"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/liftlogai?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      DB_USERNAME: liftlogai
+      DB_PASSWORD: liftlogai
+      LIFTLOG_AUTH_TOKEN_SECRET: local-compose-secret-change-before-production-1234567890
+      LIFTLOG_COOKIE_SECURE: "false"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "8081:80"
+
+volumes:
+  mysql-data:

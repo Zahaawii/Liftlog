@@ -36,6 +36,15 @@ Deliverables:
 - Environment variable documentation.
 - Health check endpoint.
 - Standard error response infrastructure.
+- Initial auth table SQL initialization.
+- User registration and login.
+- BCrypt password hashing.
+- Secure HTTP-only cookie authentication.
+- 15-minute access token and 7-day refresh token behavior.
+- CSRF foundation for protected state-changing auth requests.
+- Authenticated request handling without `localStorage` or `sessionStorage` token storage.
+- Current-user endpoint.
+- Authentication integration tests.
 - Initial CI test command.
 
 Dependencies:
@@ -43,19 +52,13 @@ Dependencies:
 - Approved monorepo structure.
 - Approved deployment assumptions.
 
-### Milestone 2: Authentication and Authorization
+### Milestone 2: Authorization Hardening
 
 Deliverables:
 
-- User registration and login.
-- BCrypt password hashing.
-- Secure HTTP-only cookie authentication.
-- 15-minute access token and 7-day refresh token behavior.
-- CSRF protection for cookie-authenticated state-changing requests where necessary.
-- Authenticated request handling without `localStorage` or `sessionStorage` token storage.
-- Current-user endpoint.
+- Expand CSRF protection coverage as new state-changing user-owned resource endpoints are added.
 - User-owned resource authorization pattern.
-- Authentication integration tests.
+- Cross-domain authorization integration tests.
 
 Dependencies:
 
@@ -217,7 +220,8 @@ Prepare for production:
 ## Dependencies
 
 - Authentication must precede user-owned resource features.
-- Database design must be accepted before migrations are written.
+- Database design must be accepted before broader schema migrations are written.
+- Formal migration tooling should be introduced before implementing workout, nutrition, goal, exercise, dashboard, or AI feedback tables.
 - API contracts must be accepted before frontend implementation depends on them.
 - Global shared exercises must exist before workout creation can reference exercise records.
 - Dashboard depends on workout, nutrition, and goal services.

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LiftLog AI</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="auth-panel" aria-labelledby="auth-title">
+      <h1 id="auth-title">LiftLog AI</h1>
+      <div id="message" class="message" role="status"></div>
+
+      <form id="register-form" class="auth-form">
+        <h2>Create account</h2>
+        <label>
+          Email
+          <input name="email" type="email" autocomplete="email" required>
+        </label>
+        <label>
+          Display name
+          <input name="displayName" type="text" autocomplete="name">
+        </label>
+        <label>
+          Password
+          <input name="password" type="password" autocomplete="new-password" minlength="8" required>
+        </label>
+        <button type="submit">Register</button>
+      </form>
+
+      <form id="login-form" class="auth-form">
+        <h2>Sign in</h2>
+        <label>
+          Email
+          <input name="email" type="email" autocomplete="email" required>
+        </label>
+        <label>
+          Password
+          <input name="password" type="password" autocomplete="current-password" required>
+        </label>
+        <button type="submit">Login</button>
+      </form>
+
+      <section class="session-panel">
+        <h2>Session</h2>
+        <pre id="current-user">Not signed in</pre>
+        <button id="refresh-session" type="button">Refresh session</button>
+        <button id="logout" type="button">Logout</button>
+      </section>
+    </section>
+  </main>
+  <script type="module" src="/js/auth/auth.js"></script>
+</body>
+</html>

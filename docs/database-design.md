@@ -326,6 +326,10 @@ AI feedback records are linked to users and store feedback history indefinitely 
 - Numeric fitness values should reject impossible negative values.
 - Dates should be validated at the API and service layer.
 
+## Milestone 1 Implementation Note
+
+Milestone 1 creates only the authentication tables needed for registration, login, and refresh-token tracking. The implementation uses Spring SQL initialization for the initial `users` and `refresh_tokens` tables. Before workout, nutrition, goals, AI history, or exercise library tables are implemented, the project should adopt formal migration tooling so schema changes are versioned consistently.
+
 ## Future Scalability Considerations
 
 - Add custom user-created exercises after the global shared exercise library and workout references are stable.
