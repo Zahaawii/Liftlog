@@ -154,6 +154,8 @@ Workout request:
           "setNumber": 1,
           "reps": 8,
           "weight": 80.0,
+          "durationSeconds": null,
+          "distance": null,
           "completed": true,
           "notes": ""
         }
@@ -184,11 +186,39 @@ Workout response:
           "setNumber": 1,
           "reps": 8,
           "weight": 80.0,
-          "completed": true
+          "durationSeconds": null,
+          "distance": null,
+          "completed": true,
+          "notes": ""
         }
       ]
     }
   ]
+}
+```
+
+Validation rules:
+
+- `workoutDate` is required.
+- A workout must contain at least one exercise.
+- Each workout exercise must reference an active shared exercise.
+- Each workout exercise must contain at least one set.
+- Each set must include at least one performance metric: reps, weight, duration, or distance.
+- Numeric metrics must not be negative.
+
+Exercise progression response:
+
+```json
+{
+  "exercise": {
+    "id": "exercise-id",
+    "name": "Bench Press"
+  },
+  "workoutCount": 4,
+  "completedSetCount": 12,
+  "bestReps": 10,
+  "bestWeight": 100.0,
+  "totalVolume": 8450.0
 }
 ```
 
@@ -218,10 +248,14 @@ Nutrition log response:
   "logDate": "2026-06-16",
   "mealType": "lunch",
   "foodName": "Chicken rice bowl",
+  "servingQuantity": 1.0,
   "calories": 650,
   "protein": 45.0,
   "carbohydrates": 70.0,
-  "fat": 18.0
+  "fat": 18.0,
+  "notes": "",
+  "createdAt": "2026-06-16T12:00:00Z",
+  "updatedAt": "2026-06-16T12:00:00Z"
 }
 ```
 
@@ -236,6 +270,14 @@ Daily nutrition summary response:
   "fat": 70.0
 }
 ```
+
+Nutrition validation rules:
+
+- `logDate`, `mealType`, and `foodName` are required.
+- `mealType` is normalized to lowercase.
+- Calories, serving quantity, and macronutrient values must not be negative.
+- A nutrition log must include calories or at least one macronutrient value.
+- Nutrition logs are scoped to the authenticated user.
 
 ### Goal Models
 
@@ -340,6 +382,8 @@ AI feedback response:
 - `GET /api/exercises/{id}`: get exercise details.
 - `GET /api/exercises/{id}/progression`: get progression metrics.
 
+Milestone 2 implements these as authenticated endpoints backed by the global shared exercise library.
+
 Future custom exercise endpoints:
 
 - `POST /api/exercises/custom`: create custom exercise.
@@ -355,6 +399,12 @@ Future custom exercise endpoints:
 - `PUT /api/workouts/{id}`: update workout.
 - `DELETE /api/workouts/{id}`: delete workout.
 
+Milestone 2 error codes:
+
+- `EXERCISE_NOT_FOUND`: referenced exercise does not exist or is inactive.
+- `WORKOUT_NOT_FOUND`: workout does not exist or does not belong to the current user.
+- `WORKOUT_SET_METRIC_REQUIRED`: a set was submitted without reps, weight, duration, or distance.
+
 ### Nutrition
 
 - `GET /api/nutrition/logs`: paginated nutrition logs.
@@ -363,6 +413,11 @@ Future custom exercise endpoints:
 - `PUT /api/nutrition/logs/{id}`: update nutrition log.
 - `DELETE /api/nutrition/logs/{id}`: delete nutrition log.
 - `GET /api/nutrition/summary/daily?date=YYYY-MM-DD`: daily nutrition totals.
+
+Milestone 3 error codes:
+
+- `NUTRITION_LOG_NOT_FOUND`: nutrition log does not exist or does not belong to the current user.
+- `NUTRITION_VALUE_REQUIRED`: a nutrition log was submitted without calories, protein, carbohydrates, or fat.
 
 ### Goals
 

@@ -147,6 +147,7 @@ Notes:
 
 - Different exercises may use different metric combinations.
 - Progress calculations should use completed sets only.
+- Milestone 2 requires at least one performance metric per set: reps, weight, duration, or distance.
 
 ### Nutrition Log
 
@@ -167,6 +168,12 @@ Key attributes:
 - notes
 - created_at
 - updated_at
+
+Notes:
+
+- Nutrition logs are user-owned and must be queried by authenticated user ID.
+- Milestone 3 requires each log to include calories or at least one macronutrient value.
+- Daily summaries aggregate calories, protein, carbohydrates, and fat for one authenticated user and date.
 
 ### Goal
 
@@ -326,9 +333,11 @@ AI feedback records are linked to users and store feedback history indefinitely 
 - Numeric fitness values should reject impossible negative values.
 - Dates should be validated at the API and service layer.
 
-## Milestone 1 Implementation Note
+## Implementation Notes
 
-Milestone 1 creates only the authentication tables needed for registration, login, and refresh-token tracking. The implementation uses Spring SQL initialization for the initial `users` and `refresh_tokens` tables. Before workout, nutrition, goals, AI history, or exercise library tables are implemented, the project should adopt formal migration tooling so schema changes are versioned consistently.
+Milestone 1 created the authentication tables needed for registration, login, and refresh-token tracking. Milestone 2 adds the global `exercises` table plus `workouts`, `workout_exercises`, and `workout_sets`. Milestone 3 adds `nutrition_logs`.
+
+The implementation currently uses Spring SQL initialization so local Docker, MySQL, and H2 integration tests share one simple schema path. Formal migration tooling should be introduced before production deployment or the next schema-heavy milestone so future schema changes are versioned consistently.
 
 ## Future Scalability Considerations
 

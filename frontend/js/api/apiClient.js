@@ -44,3 +44,7 @@ export async function fetchCsrfToken() {
   csrfToken = body.csrfToken;
   return csrfToken;
 }
+
+export function clearCsrfToken() {
+  csrfToken = null;
+}

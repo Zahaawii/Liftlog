@@ -177,6 +177,22 @@ Common backend infrastructure:
 - Logging utilities or conventions.
 - DTO mappers.
 
+Milestone 2 workout implementation:
+
+- `exercise` owns the global shared exercise library, exercise listing, exercise details, and basic progression read models.
+- `workout` owns workout CRUD, nested workout exercise/set persistence, user ownership checks, and workout response mapping.
+- Workout controllers remain thin and delegate ownership-aware behavior to services.
+- Workout mutations rely on the existing cookie authentication and CSRF filter.
+- Workout history uses bounded offset pagination with a maximum page size of 100.
+
+Milestone 3 nutrition implementation:
+
+- `nutrition` owns nutrition log CRUD, paginated nutrition history, daily nutrition totals, user ownership checks, validation, and response mapping.
+- Nutrition controllers stay thin and delegate ownership-aware behavior to services.
+- Nutrition history uses bounded offset pagination with a maximum page size of 100.
+- Nutrition mutations rely on the existing secure cookie authentication and CSRF filter.
+- Daily totals are calculated server-side from the authenticated user's logs for the requested date.
+
 ## Domain Boundaries
 
 Primary backend domains:
@@ -273,7 +289,9 @@ Recommended environments:
 Deployment concerns:
 
 - Milestone 1 initializes the auth schema with Spring SQL initialization so local, test, and Docker environments can start consistently.
-- Formal database migration tooling should be introduced before expanding beyond the Milestone 1 auth schema.
+- Milestone 2 extends the same SQL initialization approach for the exercise and workout tables to keep local Docker and H2 tests aligned.
+- Milestone 3 extends SQL initialization with the nutrition log table for the same local/test consistency.
+- Formal database migration tooling should be introduced before production deployment or the next schema-heavy milestone.
 - Production secrets must not be committed.
 - Health checks should cover backend availability and database connectivity.
 - OpenAI credentials must come from environment variables.

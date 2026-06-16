@@ -74,7 +74,13 @@ Required integration test areas:
 - Workout CRUD with nested exercises and sets.
 - Workout exercise entries reference global shared exercise records.
 - Paginated workout history.
+- Workout ownership isolation for single-resource reads.
+- CSRF enforcement for workout mutations.
+- Workout validation and domain error responses.
 - Nutrition log CRUD and daily totals.
+- Nutrition ownership isolation for single-resource reads.
+- CSRF enforcement for nutrition mutations.
+- Nutrition validation and domain error responses.
 - Goal CRUD and progress response.
 - Dashboard summary.
 - Standard error response format.
@@ -164,6 +170,36 @@ Every bug fix should include:
 - A regression test committed with the fix.
 
 Regression tests should be placed at the lowest level that catches the bug reliably. Service-level bugs usually need unit tests. API contract or security bugs usually need integration tests.
+
+## Milestone 2 Test Coverage
+
+Milestone 2 adds backend integration coverage for:
+
+- Creating workouts with nested exercises and sets.
+- Persisting workout exercise references to shared exercise records.
+- Paginated workout history scoped to the authenticated user.
+- Rejecting access to another user's workout.
+- Updating workouts by replacing nested exercise/set details.
+- Deleting workouts.
+- Rejecting sets without a performance metric.
+- Requiring CSRF tokens for workout mutations.
+- Listing authenticated shared exercises.
+- Calculating basic exercise progression from the current user's completed sets.
+
+## Milestone 3 Test Coverage
+
+Milestone 3 adds backend integration coverage for:
+
+- Creating nutrition logs for the authenticated user.
+- Paginated nutrition history scoped to the authenticated user.
+- Rejecting access to another user's nutrition log.
+- Updating nutrition logs.
+- Deleting nutrition logs.
+- Calculating daily nutrition totals from only the current user's logs.
+- Returning zero daily totals when no logs exist for the requested date.
+- Rejecting logs without calories or macronutrient values.
+- Returning standard validation errors for invalid numeric values.
+- Requiring CSRF tokens for nutrition mutations.
 
 ## Test Data Strategy
 

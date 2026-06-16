@@ -48,6 +48,183 @@
         <button id="refresh-session" type="button">Refresh session</button>
         <button id="logout" type="button">Logout</button>
       </section>
+
+      <section class="dashboard-panel" aria-labelledby="dashboard-title">
+        <div class="section-header">
+          <h2 id="dashboard-title">Dashboard</h2>
+          <button id="load-dashboard" type="button">Refresh</button>
+        </div>
+        <div id="dashboard-summary" class="dashboard-summary"></div>
+      </section>
+
+      <section class="workout-panel" aria-labelledby="workout-title">
+        <div class="section-header">
+          <h2 id="workout-title">Workouts</h2>
+          <button id="load-workouts" type="button">Refresh</button>
+        </div>
+
+        <form id="workout-form" class="workout-form">
+          <label>
+            Date
+            <input name="workoutDate" type="date" required>
+          </label>
+          <label>
+            Title
+            <input name="title" type="text" maxlength="160" placeholder="Upper Body">
+          </label>
+          <label>
+            Exercise
+            <select name="exerciseId" id="exercise-select" required></select>
+          </label>
+          <div class="set-grid">
+            <label>
+              Reps
+              <input name="reps" type="number" min="0" step="1" required>
+            </label>
+            <label>
+              Weight
+              <input name="weight" type="number" min="0" step="0.01">
+            </label>
+          </div>
+          <label>
+            Notes
+            <textarea name="notes" maxlength="1000" rows="3"></textarea>
+          </label>
+          <button type="submit">Log workout</button>
+        </form>
+
+        <div id="workout-list" class="workout-list"></div>
+      </section>
+
+      <section class="nutrition-panel" aria-labelledby="nutrition-title">
+        <div class="section-header">
+          <h2 id="nutrition-title">Nutrition</h2>
+          <button id="load-nutrition" type="button">Refresh</button>
+        </div>
+
+        <form id="nutrition-form" class="nutrition-form">
+          <label>
+            Date
+            <input name="logDate" type="date" required>
+          </label>
+          <label>
+            Meal
+            <select name="mealType" required>
+              <option value="breakfast">Breakfast</option>
+              <option value="lunch">Lunch</option>
+              <option value="dinner">Dinner</option>
+              <option value="snack">Snack</option>
+            </select>
+          </label>
+          <label>
+            Food
+            <input name="foodName" type="text" maxlength="160" required>
+          </label>
+          <div class="metric-grid">
+            <label>
+              Calories
+              <input name="calories" type="number" min="0" step="1">
+            </label>
+            <label>
+              Protein
+              <input name="protein" type="number" min="0" step="0.01">
+            </label>
+            <label>
+              Carbs
+              <input name="carbohydrates" type="number" min="0" step="0.01">
+            </label>
+            <label>
+              Fat
+              <input name="fat" type="number" min="0" step="0.01">
+            </label>
+          </div>
+          <label>
+            Notes
+            <textarea name="notes" maxlength="1000" rows="3"></textarea>
+          </label>
+          <button type="submit">Log food</button>
+        </form>
+
+        <div id="nutrition-summary" class="nutrition-summary"></div>
+        <div id="nutrition-list" class="nutrition-list"></div>
+      </section>
+
+      <section class="goal-panel" aria-labelledby="goal-title">
+        <div class="section-header">
+          <h2 id="goal-title">Goals</h2>
+          <button id="load-goals" type="button">Refresh</button>
+        </div>
+
+        <form id="goal-form" class="goal-form">
+          <label>
+            Goal type
+            <select name="goalType" required>
+              <option value="workout_frequency">Workout frequency</option>
+              <option value="strength">Strength</option>
+              <option value="nutrition">Nutrition</option>
+              <option value="body_weight">Body weight</option>
+              <option value="custom">Custom</option>
+            </select>
+          </label>
+          <label>
+            Title
+            <input name="title" type="text" maxlength="160" placeholder="Train 4 times per week" required>
+          </label>
+          <label>
+            Metric
+            <select name="targetMetric" required>
+              <option value="weekly_workout_count">Weekly workout count</option>
+              <option value="workout_count">Workout count</option>
+              <option value="daily_calories">Daily calories</option>
+              <option value="body_weight">Body weight</option>
+              <option value="custom_value">Custom value</option>
+            </select>
+          </label>
+          <div class="goal-grid">
+            <label>
+              Target
+              <input name="targetValue" type="number" min="0.01" step="0.01" required>
+            </label>
+            <label>
+              Baseline
+              <input name="currentBaseline" type="number" min="0" step="0.01">
+            </label>
+            <label>
+              Start
+              <input name="startDate" type="date" required>
+            </label>
+            <label>
+              Target date
+              <input name="targetDate" type="date">
+            </label>
+          </div>
+          <button type="submit">Create goal</button>
+        </form>
+
+        <form id="goal-checkin-form" class="goal-form">
+          <label>
+            Goal
+            <select name="goalId" id="goal-checkin-select" required></select>
+          </label>
+          <div class="goal-grid">
+            <label>
+              Date
+              <input name="checkInDate" type="date" required>
+            </label>
+            <label>
+              Value
+              <input name="value" type="number" min="0" step="0.01" required>
+            </label>
+          </div>
+          <label>
+            Notes
+            <textarea name="notes" maxlength="1000" rows="3"></textarea>
+          </label>
+          <button type="submit">Log check-in</button>
+        </form>
+
+        <div id="goal-list" class="goal-list"></div>
+      </section>
     </section>
   </main>
   <script type="module" src="/js/auth/auth.js"></script>

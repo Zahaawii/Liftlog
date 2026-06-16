@@ -52,13 +52,20 @@ Dependencies:
 - Approved monorepo structure.
 - Approved deployment assumptions.
 
-### Milestone 2: Authorization Hardening
+### Milestone 2: Workout Tracking
 
 Deliverables:
 
-- Expand CSRF protection coverage as new state-changing user-owned resource endpoints are added.
-- User-owned resource authorization pattern.
-- Cross-domain authorization integration tests.
+- Global shared exercise library.
+- Exercise listing and detail endpoints.
+- Workout CRUD with exercises and sets.
+- Workout exercise entries reference shared exercise records.
+- Paginated workout history.
+- Basic exercise progression endpoint.
+- Workout frontend workflow for logging and viewing recent workouts.
+- CSRF protection coverage for workout mutations.
+- User-owned resource authorization pattern for workout reads, updates, and deletes.
+- Workout, exercise, pagination, authorization, validation, and CSRF integration tests.
 
 Dependencies:
 
@@ -66,25 +73,10 @@ Dependencies:
 - Approved cookie, refresh, and CSRF strategy.
 - User schema.
 - Error response standard.
-
-### Milestone 3: Workout and Exercise Tracking
-
-Deliverables:
-
-- Global shared exercise library.
-- Workout CRUD with exercises and sets.
-- Workout exercise references to shared exercise records.
-- Paginated workout history.
-- Exercise progression endpoint.
-- Workout and progression tests.
-
-Dependencies:
-
-- Authentication.
 - Workout schema.
 - Exercise schema.
 
-### Milestone 4: Nutrition Tracking
+### Milestone 3: Nutrition Tracking
 
 Deliverables:
 
@@ -92,13 +84,16 @@ Deliverables:
 - Daily nutrition summary.
 - Paginated nutrition history.
 - Nutrition validation and integration tests.
+- Nutrition frontend workflow for logging food, viewing recent logs, and viewing daily totals.
+- CSRF protection coverage for nutrition mutations.
+- User-owned resource authorization pattern for nutrition reads, updates, and deletes.
 
 Dependencies:
 
 - Authentication.
 - Nutrition schema.
 
-### Milestone 5: Goal Tracking and Dashboard
+### Milestone 4: Goal Tracking and Dashboard
 
 Deliverables:
 
@@ -114,7 +109,7 @@ Dependencies:
 - Workout and nutrition domains.
 - Goal schema.
 
-### Milestone 6: AI Feedback
+### Milestone 5: AI Feedback
 
 Deliverables:
 
@@ -134,7 +129,7 @@ Dependencies:
 - Workout, nutrition, goal, and dashboard summaries.
 - OpenAI environment configuration.
 
-### Milestone 7: Production Readiness
+### Milestone 6: Production Readiness
 
 Deliverables:
 
@@ -201,11 +196,11 @@ Prepare for production:
 3. Add backend common error handling and validation conventions.
 4. Add secure cookie authentication, refresh flow, CSRF handling, and current-user flow.
 5. Add frontend API client and auth module without browser token storage.
-6. Add user profile support.
-7. Add global exercise library model and endpoints.
-8. Add workout model and endpoints referencing exercise records.
-9. Add workout frontend workflows.
-10. Add exercise progression calculations.
+6. Add global exercise library model and endpoints.
+7. Add workout model and endpoints referencing exercise records.
+8. Add workout frontend workflows.
+9. Add exercise progression calculations.
+10. Add user profile support.
 11. Add nutrition model and endpoints.
 12. Add nutrition frontend workflows.
 13. Add goal model, progress services, and endpoints.
@@ -221,7 +216,7 @@ Prepare for production:
 
 - Authentication must precede user-owned resource features.
 - Database design must be accepted before broader schema migrations are written.
-- Formal migration tooling should be introduced before implementing workout, nutrition, goal, exercise, dashboard, or AI feedback tables.
+- Formal migration tooling should be introduced before production deployment or the next schema-heavy milestone.
 - API contracts must be accepted before frontend implementation depends on them.
 - Global shared exercises must exist before workout creation can reference exercise records.
 - Dashboard depends on workout, nutrition, and goal services.

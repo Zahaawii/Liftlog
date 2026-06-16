@@ -10,6 +10,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.liftlogai.auth.repository.RefreshTokenRepository;
+import com.liftlogai.goal.repository.GoalCheckInRepository;
+import com.liftlogai.goal.repository.GoalRepository;
+import com.liftlogai.nutrition.repository.NutritionLogRepository;
 import com.liftlogai.user.entity.User;
 import com.liftlogai.user.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
@@ -37,8 +40,20 @@ class AuthControllerIntegrationTest {
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
 
+    @Autowired
+    private NutritionLogRepository nutritionLogRepository;
+
+    @Autowired
+    private GoalCheckInRepository goalCheckInRepository;
+
+    @Autowired
+    private GoalRepository goalRepository;
+
     @BeforeEach
     void setUp() {
+        goalCheckInRepository.deleteAll();
+        goalRepository.deleteAll();
+        nutritionLogRepository.deleteAll();
         refreshTokenRepository.deleteAll();
         userRepository.deleteAll();
     }
