@@ -9,6 +9,7 @@ const loadWorkoutsButton = document.querySelector("#load-workouts");
 export async function initWorkouts() {
   workoutForm.addEventListener("submit", handleWorkoutSubmit);
   loadWorkoutsButton.addEventListener("click", loadWorkouts);
+  setDefaultWorkoutDate();
   workoutList.textContent = "Sign in to view workouts.";
 }
 
@@ -26,7 +27,7 @@ async function loadExercises() {
   try {
     const exercises = await request("/api/exercises");
     exerciseSelect.innerHTML = exercises
-      .map((exercise) => `<option value="${exercise.id}">${exercise.name}</option>`)
+      .map((exercise) => `<option value="${exercise.id}">${escapeHtml(exercise.name)}</option>`)
       .join("");
   } catch (error) {
     showMessage(error.message);
@@ -74,6 +75,7 @@ async function handleWorkoutSubmit(event) {
       body: JSON.stringify(payload)
     });
     workoutForm.reset();
+    setDefaultWorkoutDate();
     showMessage("Workout logged.");
     await loadWorkouts();
     notifyFitnessDataChanged();
@@ -84,7 +86,12 @@ async function handleWorkoutSubmit(event) {
 
 function renderWorkouts(workouts) {
   if (!workouts.length) {
-    workoutList.textContent = "No workouts logged yet.";
+    workoutList.innerHTML = `
+      <article class="empty-state">
+        <h3>No workouts logged yet</h3>
+        <p class="metric-subtext">Log a workout to start building your strength progression history.</p>
+      </article>
+    `;
     return;
   }
 
@@ -92,22 +99,50 @@ function renderWorkouts(workouts) {
 }
 
 function renderWorkout(workout) {
-  const exerciseLines = workout.exercises
+  const exerciseCount = workout.exercises?.length || 0;
+  const totalSets = (workout.exercises || []).reduce((count, entry) => count + (entry.sets?.length || 0), 0);
+  const volume = calculateVolume(workout);
+  const exerciseLines = (workout.exercises || [])
     .map((entry) => {
-      const sets = entry.sets
-        .map((set) => `${set.reps ?? "-"} reps${set.weight ? ` at ${set.weight}` : ""}`)
+      const sets = (entry.sets || [])
+        .map((set) => `${set.reps ?? "-"} reps${set.weight ? ` at ${formatNumber(set.weight)}kg` : ""}`)
         .join(", ");
-      return `<p>${escapeHtml(entry.exercise.name)}: ${escapeHtml(sets)}</p>`;
+      return `<p><strong>${escapeHtml(entry.exercise?.name || "Exercise")}:</strong> ${escapeHtml(sets)}</p>`;
     })
     .join("");
 
   return `
     <article class="workout-item">
-      <h3>${escapeHtml(workout.title || "Workout")} · ${escapeHtml(workout.workoutDate)}</h3>
+      <div class="item-row">
+        <h3>${escapeHtml(workout.title || "Workout")}</h3>
+        <span class="pill strength-pill">${escapeHtml(workout.workoutDate)}</span>
+      </div>
+      <p class="item-meta">${exerciseCount} exercises · ${totalSets} sets${volume ? ` · ${formatNumber(volume)}kg volume` : ""}</p>
       ${exerciseLines}
       ${workout.notes ? `<p>${escapeHtml(workout.notes)}</p>` : ""}
     </article>
   `;
+}
+
+function calculateVolume(workout) {
+  return (workout.exercises || []).reduce((total, entry) => {
+    return total + (entry.sets || []).reduce((setTotal, set) => {
+      const reps = Number(set.reps) || 0;
+      const weight = Number(set.weight) || 0;
+      return setTotal + reps * weight;
+    }, 0);
+  }, 0);
+}
+
+function setDefaultWorkoutDate() {
+  if (!workoutForm.elements.workoutDate.value) {
+    workoutForm.elements.workoutDate.value = new Date().toISOString().slice(0, 10);
+  }
+}
+
+function formatNumber(value) {
+  const number = Number(value) || 0;
+  return Number.isInteger(number) ? String(number) : number.toFixed(1);
 }
 
 function escapeHtml(value) {

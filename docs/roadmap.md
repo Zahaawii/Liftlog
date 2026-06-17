@@ -97,12 +97,12 @@ Dependencies:
 
 Deliverables:
 
-- Goal CRUD.
-- Goal check-ins.
-- Goal progress calculations.
-- Dashboard summary endpoint.
-- Dashboard frontend integration.
-- Goal and dashboard tests.
+- Goal CRUD. Completed.
+- Goal check-ins. Completed.
+- Goal progress calculations. Completed.
+- Dashboard summary endpoint. Completed.
+- Dashboard frontend integration. Completed.
+- Goal and dashboard tests. Completed.
 
 Dependencies:
 
@@ -113,15 +113,15 @@ Dependencies:
 
 Deliverables:
 
-- AI provider abstraction.
-- OpenAI provider implementation.
-- Prompt builder.
-- Configurable provider selection for future Gemini and Claude support.
-- AI feedback endpoint.
-- AI feedback history stored indefinitely with `id`, `userId`, `promptSummary`, `feedback`, and `createdAt`.
-- Graceful provider failure handling.
-- Stub provider for automated tests.
-- AI feedback frontend integration.
+- AI provider abstraction. Completed.
+- OpenAI provider implementation. Completed.
+- Prompt builder. Completed.
+- Configurable provider selection for future Gemini and Claude support. Completed.
+- AI feedback endpoint. Completed.
+- AI feedback history stored indefinitely with `id`, `userId`, `promptSummary`, `feedback`, and `createdAt`. Completed.
+- Graceful provider failure handling. Completed.
+- Stub provider for automated tests. Completed.
+- AI feedback frontend integration. Completed.
 
 Dependencies:
 
@@ -133,13 +133,13 @@ Dependencies:
 
 Deliverables:
 
-- Deployment guide.
-- Environment variable guide.
-- HTTPS deployment configuration.
-- Logging review.
-- Test coverage review.
-- Security review.
-- Known limitations and future improvements documentation.
+- Deployment guide. Completed in `docs/deployment-guide.md`.
+- Environment variable guide. Completed in `docs/environment-variables.md`.
+- HTTPS deployment configuration guidance. Completed in `docs/deployment-guide.md`.
+- Logging review. Completed in `docs/production-readiness.md`.
+- Test coverage review. Completed in `docs/production-readiness.md`.
+- Security review. Completed in `docs/production-readiness.md`.
+- Known limitations and future improvements documentation. Completed in `docs/production-readiness.md`.
 
 Dependencies:
 

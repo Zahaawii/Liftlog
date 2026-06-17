@@ -26,6 +26,7 @@ services:
       DB_PASSWORD: liftlogai
       LIFTLOG_AUTH_TOKEN_SECRET: local-compose-secret-change-before-production-1234567890
       LIFTLOG_COOKIE_SECURE: "false"
+      LIFTLOG_AI_PROVIDER: stub
     depends_on:
       mysql:
         condition: service_healthy

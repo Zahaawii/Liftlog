@@ -128,3 +128,21 @@ CREATE TABLE IF NOT EXISTS goal_check_ins (
     CONSTRAINT fk_goal_check_ins_goal FOREIGN KEY (goal_id) REFERENCES goals (id) ON DELETE CASCADE,
     INDEX idx_goal_check_ins_goal_check_in_date (goal_id, check_in_date)
 );
+
+CREATE TABLE IF NOT EXISTS ai_feedback (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    request_type VARCHAR(80) NOT NULL,
+    provider VARCHAR(80) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    prompt_summary VARCHAR(1000) NOT NULL,
+    summary VARCHAR(1000) NOT NULL,
+    recommendations TEXT,
+    feedback TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    completed_at TIMESTAMP NULL,
+    error_code VARCHAR(120),
+    CONSTRAINT fk_ai_feedback_user FOREIGN KEY (user_id) REFERENCES users (id),
+    INDEX idx_ai_feedback_user_created_at (user_id, created_at),
+    INDEX idx_ai_feedback_provider_status (provider, status)
+);

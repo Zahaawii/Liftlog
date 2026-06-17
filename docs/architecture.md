@@ -193,6 +193,24 @@ Milestone 3 nutrition implementation:
 - Nutrition mutations rely on the existing secure cookie authentication and CSRF filter.
 - Daily totals are calculated server-side from the authenticated user's logs for the requested date.
 
+Milestone 4 goal and dashboard implementation:
+
+- `goal` owns goal CRUD, goal check-ins, user ownership checks, validation, response mapping, and deterministic progress calculations.
+- Goal progress is calculated server-side from workout counts, nutrition totals, or latest check-ins depending on the target metric.
+- `dashboard` owns summary composition only; it delegates domain-specific calculations to workout, nutrition, and goal services or repositories.
+- Dashboard summaries are bounded and user-scoped: recent workouts, weekly workout count, today's nutrition totals, active goals, and a placeholder for latest AI feedback.
+- Goal and dashboard mutations and reads rely on the existing secure cookie authentication, authorization checks, and CSRF protection for state-changing requests.
+
+Milestone 5 AI feedback implementation:
+
+- `ai` owns AI feedback request handling, prompt construction, provider abstraction, persistence, history reads, and provider failure mapping.
+- `AiFeedbackController` remains thin and delegates to `AiFeedbackService`.
+- `AiFeedbackService` gathers bounded workout, nutrition, and goal summaries, builds prompts through `PromptBuilder`, calls `AiProvider`, persists successful feedback, and returns DTOs.
+- `AiProvider` hides provider-specific behavior. The first production provider is OpenAI; tests and local non-AI workflows can use the stub provider.
+- `OpenAiProvider` uses environment-driven configuration and maps provider failures into stable application errors.
+- Prompt summaries are stored for history; full prompts and raw provider responses are not stored.
+- Dashboard reads the latest persisted AI feedback through the AI service, while AI feedback does not depend on dashboard.
+
 ## Domain Boundaries
 
 Primary backend domains:
@@ -291,6 +309,8 @@ Deployment concerns:
 - Milestone 1 initializes the auth schema with Spring SQL initialization so local, test, and Docker environments can start consistently.
 - Milestone 2 extends the same SQL initialization approach for the exercise and workout tables to keep local Docker and H2 tests aligned.
 - Milestone 3 extends SQL initialization with the nutrition log table for the same local/test consistency.
+- Milestone 4 extends SQL initialization with goal and goal check-in tables for local/test consistency.
+- Milestone 5 extends SQL initialization with the AI feedback history table for local/test consistency.
 - Formal database migration tooling should be introduced before production deployment or the next schema-heavy milestone.
 - Production secrets must not be committed.
 - Health checks should cover backend availability and database connectivity.

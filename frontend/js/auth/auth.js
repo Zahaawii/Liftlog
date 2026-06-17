@@ -1,4 +1,5 @@
 import { clearCsrfToken, request } from "../api/apiClient.js";
+import { clearAiFeedbackData, initAiFeedback, loadAiFeedbackData } from "../ai/feedback.js";
 import { clearDashboardData, initDashboard, loadDashboardData } from "../dashboard/dashboard.js";
 import { clearGoalData, initGoals, loadGoalData } from "../goals/goals.js";
 import { clearNutritionData, initNutrition, loadNutritionData } from "../nutrition/nutrition.js";
@@ -29,6 +30,7 @@ refreshButton.addEventListener("click", async () => {
     await loadWorkoutData();
     await loadNutritionData();
     await loadGoalData();
+    await loadAiFeedbackData();
     showMessage("Session refreshed.");
   } catch (error) {
     showMessage(error.message);
@@ -44,6 +46,7 @@ logoutButton.addEventListener("click", async () => {
     clearWorkoutData();
     clearNutritionData();
     clearGoalData();
+    clearAiFeedbackData();
     showMessage("Signed out.");
   } catch (error) {
     showMessage(error.message);
@@ -65,6 +68,7 @@ async function submitAuthForm(path, form, successMessage) {
     await loadWorkoutData();
     await loadNutritionData();
     await loadGoalData();
+    await loadAiFeedbackData();
     showMessage(successMessage);
     form.reset();
   } catch (error) {
@@ -80,12 +84,14 @@ async function loadCurrentUser() {
     await loadWorkoutData();
     await loadNutritionData();
     await loadGoalData();
+    await loadAiFeedbackData();
   } catch {
     showUser(null);
     clearDashboardData();
     clearWorkoutData();
     clearNutritionData();
     clearGoalData();
+    clearAiFeedbackData();
   }
 }
 
@@ -93,4 +99,5 @@ initDashboard();
 initWorkouts();
 initNutrition();
 initGoals();
+initAiFeedback();
 loadCurrentUser();

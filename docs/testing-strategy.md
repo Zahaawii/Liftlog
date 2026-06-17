@@ -201,6 +201,39 @@ Milestone 3 adds backend integration coverage for:
 - Returning standard validation errors for invalid numeric values.
 - Requiring CSRF tokens for nutrition mutations.
 
+## Milestone 4 Test Coverage
+
+Milestone 4 adds backend integration coverage for:
+
+- Creating goals for the authenticated user.
+- Calculating deterministic workout-count goal progress from user-owned workouts.
+- Paginated goal history scoped to the authenticated user.
+- Rejecting access to another user's goal.
+- Updating goals.
+- Deleting goals.
+- Creating and listing goal check-ins.
+- Calculating generic goal progress from the latest check-in.
+- Returning domain errors for invalid goal date ranges.
+- Requiring CSRF tokens for goal mutations.
+- Composing dashboard summaries from user-owned workout, nutrition, and goal data.
+- Rejecting unauthenticated dashboard summary requests.
+
+## Milestone 5 Test Coverage
+
+Milestone 5 adds backend coverage for:
+
+- Prompt builder data minimization and secret-like text redaction.
+- Prompt summaries that avoid storing raw custom questions.
+- Stub-provider selection in the test profile.
+- Successful AI feedback creation through the provider abstraction.
+- AI feedback history persistence with provider-neutral response fields.
+- Paginated AI feedback history scoped to the authenticated user.
+- Rejecting access to another user's AI feedback.
+- Dashboard summaries including latest persisted AI feedback.
+- Requiring CSRF tokens for AI feedback requests.
+- OpenAI provider misconfiguration mapping to a stable service-unavailable error.
+- Verifying failed provider calls do not persist feedback history.
+
 ## Test Data Strategy
 
 - Use builders or fixtures for users, workouts, nutrition logs, goals, and AI feedback requests.

@@ -9,6 +9,7 @@ const loadNutritionButton = document.querySelector("#load-nutrition");
 export function initNutrition() {
   nutritionForm.addEventListener("submit", handleNutritionSubmit);
   loadNutritionButton.addEventListener("click", loadNutritionData);
+  setDefaultNutritionDate();
   clearNutritionData();
 }
 
@@ -54,6 +55,7 @@ async function handleNutritionSubmit(event) {
       body: JSON.stringify(payload)
     });
     nutritionForm.reset();
+    setDefaultNutritionDate();
     showMessage("Food logged.");
     await loadNutritionData();
     notifyFitnessDataChanged();
@@ -63,15 +65,33 @@ async function handleNutritionSubmit(event) {
 }
 
 function renderSummary(summary) {
+  const protein = Number(summary.protein) || 0;
+  const proteinMeterWidth = Math.min(100, Math.round((protein / 160) * 100));
+
   nutritionSummary.innerHTML = `
-    <p>${escapeHtml(summary.date)} totals</p>
-    <p>${summary.calories} calories · ${summary.protein}g protein · ${summary.carbohydrates}g carbs · ${summary.fat}g fat</p>
+    <div class="metric-card-header">
+      <div>
+        <h3>Protein today</h3>
+        <p class="metric-subtext">${escapeHtml(summary.date)} totals</p>
+      </div>
+      <span class="pill protein-pill">${formatNumber(protein)}g</span>
+    </div>
+    <p class="metric-value">${formatNumber(protein)}g</p>
+    <div class="progress-track" aria-label="Protein logged today">
+      <span style="width: ${proteinMeterWidth}%"></span>
+    </div>
+    <p class="metric-subtext">${formatNumber(summary.calories)} calories · ${formatNumber(summary.carbohydrates)}g carbs · ${formatNumber(summary.fat)}g fat</p>
   `;
 }
 
 function renderLogs(logs) {
   if (!logs.length) {
-    nutritionList.textContent = "No nutrition logged yet.";
+    nutritionList.innerHTML = `
+      <article class="empty-state">
+        <h3>No food logged yet</h3>
+        <p class="metric-subtext">Log a protein source to start tracking today's intake.</p>
+      </article>
+    `;
     return;
   }
 
@@ -81,9 +101,12 @@ function renderLogs(logs) {
 function renderLog(log) {
   return `
     <article class="nutrition-item">
-      <h3>${escapeHtml(log.foodName)} · ${escapeHtml(log.logDate)}</h3>
-      <p>${escapeHtml(log.mealType)} · ${log.calories ?? 0} calories</p>
-      <p>${log.protein ?? 0}g protein · ${log.carbohydrates ?? 0}g carbs · ${log.fat ?? 0}g fat</p>
+      <div class="item-row">
+        <h3>${escapeHtml(log.foodName)}</h3>
+        <span class="pill protein-pill">${formatNumber(log.protein)}g protein</span>
+      </div>
+      <p class="item-meta">${escapeHtml(formatMealType(log.mealType))} · ${escapeHtml(log.logDate)} · ${formatNumber(log.calories)} calories</p>
+      <p>${formatNumber(log.carbohydrates)}g carbs · ${formatNumber(log.fat)}g fat</p>
       ${log.notes ? `<p>${escapeHtml(log.notes)}</p>` : ""}
     </article>
   `;
@@ -99,6 +122,24 @@ function currentDateValue() {
 
 function numberOrNull(value) {
   return value === "" || value == null ? null : Number(value);
+}
+
+function setDefaultNutritionDate() {
+  if (!nutritionForm.elements.logDate.value) {
+    nutritionForm.elements.logDate.value = new Date().toISOString().slice(0, 10);
+  }
+}
+
+function formatMealType(value) {
+  return String(value || "Meal")
+    .replaceAll("_", " ")
+    .toLowerCase()
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function formatNumber(value) {
+  const number = Number(value) || 0;
+  return Number.isInteger(number) ? String(number) : number.toFixed(1);
 }
 
 function escapeHtml(value) {

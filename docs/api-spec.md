@@ -289,8 +289,10 @@ Goal request:
   "title": "Train 4 times per week",
   "targetMetric": "weekly_workout_count",
   "targetValue": 4,
+  "currentBaseline": 0,
   "startDate": "2026-06-16",
-  "targetDate": "2026-09-16"
+  "targetDate": "2026-09-16",
+  "status": "ACTIVE"
 }
 ```
 
@@ -305,9 +307,46 @@ Goal response:
   "targetValue": 4,
   "currentValue": 3,
   "progressPercent": 75,
-  "status": "active"
+  "status": "ACTIVE",
+  "startDate": "2026-06-16",
+  "targetDate": "2026-09-16",
+  "createdAt": "2026-06-16T12:00:00Z",
+  "updatedAt": "2026-06-16T12:00:00Z"
 }
 ```
+
+Goal check-in request:
+
+```json
+{
+  "checkInDate": "2026-06-23",
+  "value": 74.5,
+  "notes": "Morning check-in"
+}
+```
+
+Goal check-in response:
+
+```json
+{
+  "id": "goal-check-in-id",
+  "checkInDate": "2026-06-23",
+  "value": 74.5,
+  "notes": "Morning check-in",
+  "createdAt": "2026-06-23T12:00:00Z"
+}
+```
+
+Goal validation and progress rules:
+
+- `goalType`, `title`, `targetMetric`, `targetValue`, and `startDate` are required.
+- `goalType` and `targetMetric` are normalized to lowercase.
+- `targetValue` must be greater than zero.
+- `currentBaseline` and check-in values must not be negative.
+- `targetDate` must not be before `startDate`.
+- Workout-count goal progress is calculated from the authenticated user's workouts in the goal date window.
+- Daily-calorie goal progress is calculated from the authenticated user's nutrition totals.
+- Generic goals use the latest check-in value, then baseline, then zero.
 
 ### Dashboard Models
 
@@ -348,6 +387,8 @@ AI feedback response:
 {
   "id": "feedback-id",
   "userId": "public-user-id",
+  "requestType": "weekly_review",
+  "provider": "openai",
   "promptSummary": "Weekly review using recent workouts, nutrition totals, and active goals.",
   "summary": "Your weekly consistency is improving.",
   "recommendations": [
@@ -359,6 +400,16 @@ AI feedback response:
   "createdAt": "2026-06-16T12:00:00Z"
 }
 ```
+
+AI feedback validation and persistence rules:
+
+- `requestType` is required and normalized to lowercase.
+- `question` is optional and limited to a bounded length.
+- `includeWorkouts`, `includeNutrition`, and `includeGoals` default to true when omitted.
+- Successful AI feedback is persisted indefinitely for now.
+- Stored history includes at minimum `id`, `userId`, `promptSummary`, `feedback`, and `createdAt`.
+- Full prompts and provider raw responses are not stored.
+- Automated tests use the stub provider and do not call real external AI APIs.
 
 ## REST Endpoints
 
@@ -421,7 +472,7 @@ Milestone 3 error codes:
 
 ### Goals
 
-- `GET /api/goals`: list goals.
+- `GET /api/goals`: paginated goal history.
 - `POST /api/goals`: create goal.
 - `GET /api/goals/{id}`: get goal with progress.
 - `PUT /api/goals/{id}`: update goal.
@@ -429,15 +480,33 @@ Milestone 3 error codes:
 - `POST /api/goals/{id}/check-ins`: create goal check-in.
 - `GET /api/goals/{id}/check-ins`: list goal check-ins.
 
+Milestone 4 error codes:
+
+- `GOAL_NOT_FOUND`: goal does not exist or does not belong to the current user.
+- `GOAL_DATE_RANGE_INVALID`: target date is before start date.
+
 ### Dashboard
 
 - `GET /api/dashboard/summary`: get current user's dashboard summary.
+
+Milestone 4 dashboard behavior:
+
+- Returns the authenticated user's recent workouts, current-week workout count, today's nutrition totals, active goals with progress, and `latestAiFeedback`.
+- `latestAiFeedback` is `null` until Milestone 5 AI feedback history is implemented.
+- Dashboard data is server-computed from user-scoped domain services and repositories.
 
 ### AI Feedback
 
 - `POST /api/ai/feedback`: request AI feedback.
 - `GET /api/ai/feedback`: list current user's AI feedback history.
 - `GET /api/ai/feedback/{id}`: get a feedback result.
+
+Milestone 5 error codes:
+
+- `AI_FEEDBACK_NOT_FOUND`: feedback does not exist or does not belong to the current user.
+- `AI_PROVIDER_NOT_CONFIGURED`: configured AI provider is missing required configuration.
+- `AI_PROVIDER_FAILURE`: configured AI provider failed.
+- `AI_PROVIDER_INVALID_RESPONSE`: configured AI provider returned an invalid response.
 
 ## API Risks and Trade-Offs
 

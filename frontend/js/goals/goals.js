@@ -92,7 +92,12 @@ async function handleCheckInSubmit(event) {
 
 function renderGoals(goals) {
   if (!goals.length) {
-    goalList.textContent = "No goals created yet.";
+    goalList.innerHTML = `
+      <article class="empty-state">
+        <h3>No goals created yet</h3>
+        <p class="metric-subtext">Create a strength, workout, or nutrition goal to make progress visible.</p>
+      </article>
+    `;
     return;
   }
 
@@ -106,7 +111,7 @@ function renderGoal(goal) {
         <h3>${escapeHtml(goal.title)}</h3>
         <span>${escapeHtml(goal.status)}</span>
       </div>
-      <p>${escapeHtml(goal.goalType)} · ${escapeHtml(goal.targetMetric)}</p>
+      <p class="item-meta">${escapeHtml(formatLabel(goal.goalType))} · ${escapeHtml(formatLabel(goal.targetMetric))}</p>
       <p>${goal.currentValue} of ${goal.targetValue} · ${goal.progressPercent}% complete</p>
       <div class="progress-track" aria-label="${escapeHtml(goal.title)} progress">
         <span style="width: ${boundedPercent(goal.progressPercent)}%"></span>
@@ -142,6 +147,14 @@ function numberOrNull(value) {
 
 function boundedPercent(value) {
   return Math.max(0, Math.min(100, Number(value) || 0));
+}
+
+function formatLabel(value) {
+  return String(value || "")
+    .replaceAll("_", " ")
+    .replaceAll("-", " ")
+    .toLowerCase()
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
 function notifyFitnessDataChanged() {

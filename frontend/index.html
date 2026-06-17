@@ -6,225 +6,425 @@
   <title>LiftLog AI</title>
   <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body>
+<body class="unauthenticated">
+  <div id="message" class="message" role="status" aria-live="polite"></div>
+
   <main class="app-shell">
     <section class="auth-panel" aria-labelledby="auth-title">
-      <h1 id="auth-title">LiftLog AI</h1>
-      <div id="message" class="message" role="status"></div>
-
-      <form id="register-form" class="auth-form">
-        <h2>Create account</h2>
-        <label>
-          Email
-          <input name="email" type="email" autocomplete="email" required>
-        </label>
-        <label>
-          Display name
-          <input name="displayName" type="text" autocomplete="name">
-        </label>
-        <label>
-          Password
-          <input name="password" type="password" autocomplete="new-password" minlength="8" required>
-        </label>
-        <button type="submit">Register</button>
-      </form>
-
-      <form id="login-form" class="auth-form">
-        <h2>Sign in</h2>
-        <label>
-          Email
-          <input name="email" type="email" autocomplete="email" required>
-        </label>
-        <label>
-          Password
-          <input name="password" type="password" autocomplete="current-password" required>
-        </label>
-        <button type="submit">Login</button>
-      </form>
-
-      <section class="session-panel">
-        <h2>Session</h2>
-        <pre id="current-user">Not signed in</pre>
-        <button id="refresh-session" type="button">Refresh session</button>
-        <button id="logout" type="button">Logout</button>
-      </section>
-
-      <section class="dashboard-panel" aria-labelledby="dashboard-title">
-        <div class="section-header">
-          <h2 id="dashboard-title">Dashboard</h2>
-          <button id="load-dashboard" type="button">Refresh</button>
+      <nav class="landing-nav" aria-label="Public">
+        <a class="logo-lockup" href="#auth-title">
+          <span class="logo-mark" aria-hidden="true"></span>
+          <span>LiftLog AI</span>
+        </a>
+        <div class="landing-links">
+          <a href="#features">Features</a>
+          <a href="#login-form">Log in</a>
+          <a class="button-primary" href="#register-form">Get Started</a>
         </div>
-        <div id="dashboard-summary" class="dashboard-summary"></div>
-      </section>
+      </nav>
 
-      <section class="workout-panel" aria-labelledby="workout-title">
-        <div class="section-header">
-          <h2 id="workout-title">Workouts</h2>
-          <button id="load-workouts" type="button">Refresh</button>
+      <div class="auth-intro">
+        <p class="eyebrow">AI-powered fitness tracker</p>
+        <h1 id="auth-title">Train Smarter. Track Everything.</h1>
+        <p>LiftLog AI helps you track workouts, nutrition, and progress with simple AI coaching.</p>
+        <div id="features" class="feature-row" aria-label="Key features">
+          <span>Strength progression</span>
+          <span>Protein focused</span>
+          <span>AI Coach</span>
         </div>
+      </div>
 
-        <form id="workout-form" class="workout-form">
+      <div class="auth-grid">
+        <form id="login-form" class="auth-form">
+          <h2>Sign in</h2>
           <label>
-            Date
-            <input name="workoutDate" type="date" required>
+            Email
+            <input name="email" type="email" autocomplete="email" required>
           </label>
           <label>
-            Title
-            <input name="title" type="text" maxlength="160" placeholder="Upper Body">
+            Password
+            <input name="password" type="password" autocomplete="current-password" required>
           </label>
-          <label>
-            Exercise
-            <select name="exerciseId" id="exercise-select" required></select>
-          </label>
-          <div class="set-grid">
-            <label>
-              Reps
-              <input name="reps" type="number" min="0" step="1" required>
-            </label>
-            <label>
-              Weight
-              <input name="weight" type="number" min="0" step="0.01">
-            </label>
-          </div>
-          <label>
-            Notes
-            <textarea name="notes" maxlength="1000" rows="3"></textarea>
-          </label>
-          <button type="submit">Log workout</button>
+          <button class="button-primary" type="submit">Log in</button>
         </form>
 
-        <div id="workout-list" class="workout-list"></div>
-      </section>
+        <form id="register-form" class="auth-form">
+          <h2>Create account</h2>
+          <label>
+            Display name
+            <input name="displayName" type="text" autocomplete="name">
+          </label>
+          <label>
+            Email
+            <input name="email" type="email" autocomplete="email" required>
+          </label>
+          <label>
+            Password
+            <input name="password" type="password" autocomplete="new-password" minlength="8" required>
+          </label>
+          <button class="button-secondary" type="submit">Create account</button>
+        </form>
+      </div>
+    </section>
 
-      <section class="nutrition-panel" aria-labelledby="nutrition-title">
-        <div class="section-header">
-          <h2 id="nutrition-title">Nutrition</h2>
-          <button id="load-nutrition" type="button">Refresh</button>
+    <section class="app-layout" aria-label="LiftLog AI application">
+      <aside class="desktop-sidebar" aria-label="Primary">
+        <div class="brand-mark logo-lockup">
+          <span class="logo-mark" aria-hidden="true"></span>
+          <strong>LiftLog AI</strong>
+          <span id="user-label">Signed in</span>
         </div>
+        <nav>
+          <a href="#dashboard">Dashboard</a>
+          <a href="#workouts">Workouts</a>
+          <a href="#dashboard">Progress</a>
+          <a href="#nutrition">Nutrition</a>
+          <a href="#goals">Goals</a>
+          <a href="#ai-coach">AI Coach</a>
+          <a href="#profile">Profile</a>
+        </nav>
+        <section class="upgrade-card" aria-label="Upgrade">
+          <h2>AI insights</h2>
+          <p>Review trends and keep protein on target.</p>
+          <a class="button-primary" href="#ai-coach">Open Coach</a>
+        </section>
+      </aside>
 
-        <form id="nutrition-form" class="nutrition-form">
-          <label>
-            Date
-            <input name="logDate" type="date" required>
-          </label>
-          <label>
-            Meal
-            <select name="mealType" required>
-              <option value="breakfast">Breakfast</option>
-              <option value="lunch">Lunch</option>
-              <option value="dinner">Dinner</option>
-              <option value="snack">Snack</option>
-            </select>
-          </label>
-          <label>
-            Food
-            <input name="foodName" type="text" maxlength="160" required>
-          </label>
-          <div class="metric-grid">
-            <label>
-              Calories
-              <input name="calories" type="number" min="0" step="1">
-            </label>
-            <label>
-              Protein
-              <input name="protein" type="number" min="0" step="0.01">
-            </label>
-            <label>
-              Carbs
-              <input name="carbohydrates" type="number" min="0" step="0.01">
-            </label>
-            <label>
-              Fat
-              <input name="fat" type="number" min="0" step="0.01">
-            </label>
+      <div class="content-shell">
+        <header class="mobile-topbar">
+          <a class="icon-button menu-button" href="#profile" aria-label="Menu">Menu</a>
+          <div class="mobile-brand logo-lockup">
+            <span class="logo-mark" aria-hidden="true"></span>
+            <strong>LiftLog AI</strong>
           </div>
-          <label>
-            Notes
-            <textarea name="notes" maxlength="1000" rows="3"></textarea>
-          </label>
-          <button type="submit">Log food</button>
-        </form>
+          <a class="icon-button" href="#profile" aria-label="Profile">Me</a>
+        </header>
 
-        <div id="nutrition-summary" class="nutrition-summary"></div>
-        <div id="nutrition-list" class="nutrition-list"></div>
-      </section>
-
-      <section class="goal-panel" aria-labelledby="goal-title">
-        <div class="section-header">
-          <h2 id="goal-title">Goals</h2>
-          <button id="load-goals" type="button">Refresh</button>
-        </div>
-
-        <form id="goal-form" class="goal-form">
-          <label>
-            Goal type
-            <select name="goalType" required>
-              <option value="workout_frequency">Workout frequency</option>
-              <option value="strength">Strength</option>
-              <option value="nutrition">Nutrition</option>
-              <option value="body_weight">Body weight</option>
-              <option value="custom">Custom</option>
-            </select>
-          </label>
-          <label>
-            Title
-            <input name="title" type="text" maxlength="160" placeholder="Train 4 times per week" required>
-          </label>
-          <label>
-            Metric
-            <select name="targetMetric" required>
-              <option value="weekly_workout_count">Weekly workout count</option>
-              <option value="workout_count">Workout count</option>
-              <option value="daily_calories">Daily calories</option>
-              <option value="body_weight">Body weight</option>
-              <option value="custom_value">Custom value</option>
-            </select>
-          </label>
-          <div class="goal-grid">
-            <label>
-              Target
-              <input name="targetValue" type="number" min="0.01" step="0.01" required>
-            </label>
-            <label>
-              Baseline
-              <input name="currentBaseline" type="number" min="0" step="0.01">
-            </label>
-            <label>
-              Start
-              <input name="startDate" type="date" required>
-            </label>
-            <label>
-              Target date
-              <input name="targetDate" type="date">
-            </label>
+        <header class="app-header">
+          <div>
+            <p class="eyebrow">Today</p>
+            <h1>Welcome back, <span id="welcome-name">athlete</span></h1>
+            <p>Let's crush your goals today.</p>
           </div>
-          <button type="submit">Create goal</button>
-        </form>
-
-        <form id="goal-checkin-form" class="goal-form">
-          <label>
-            Goal
-            <select name="goalId" id="goal-checkin-select" required></select>
-          </label>
-          <div class="goal-grid">
-            <label>
-              Date
-              <input name="checkInDate" type="date" required>
-            </label>
-            <label>
-              Value
-              <input name="value" type="number" min="0" step="0.01" required>
-            </label>
+          <div class="app-header-actions">
+            <a class="button-primary" href="#workouts">+ Log Workout</a>
+            <a class="icon-button" href="#profile" aria-label="Profile">Me</a>
           </div>
-          <label>
-            Notes
-            <textarea name="notes" maxlength="1000" rows="3"></textarea>
-          </label>
-          <button type="submit">Log check-in</button>
-        </form>
+        </header>
 
-        <div id="goal-list" class="goal-list"></div>
-      </section>
+        <section id="dashboard" class="dashboard-panel screen-panel" aria-labelledby="dashboard-title">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Overview</p>
+              <h2 id="dashboard-title">Dashboard</h2>
+            </div>
+            <button id="load-dashboard" class="button-secondary" type="button">Refresh</button>
+          </div>
+          <div id="dashboard-summary" class="dashboard-summary"></div>
+        </section>
+
+        <section id="quick-log" class="quick-log screen-panel" aria-labelledby="quick-log-title">
+          <div>
+            <p class="eyebrow">Fast entry</p>
+            <h2 id="quick-log-title">Quick log</h2>
+          </div>
+          <div class="quick-actions">
+            <a class="button-primary" href="#workouts">Log workout</a>
+            <a class="button-secondary protein-action" href="#nutrition">Log food</a>
+            <a class="button-secondary" href="#ai-coach">Ask AI Coach</a>
+          </div>
+        </section>
+
+        <section id="workouts" class="workout-panel screen-panel" aria-labelledby="workout-title">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Training</p>
+              <h2 id="workout-title">Workouts</h2>
+            </div>
+            <button id="load-workouts" class="button-secondary" type="button">Refresh</button>
+          </div>
+
+          <div class="panel-grid two-column">
+            <form id="workout-form" class="workout-form form-card">
+              <div class="form-heading">
+                <h3>Log workout</h3>
+                <span>Fast set entry</span>
+              </div>
+              <label>
+                Date
+                <input name="workoutDate" type="date" required>
+              </label>
+              <label>
+                Title
+                <input name="title" type="text" maxlength="160" placeholder="Upper Body">
+              </label>
+              <label>
+                Exercise
+                <select name="exerciseId" id="exercise-select" required></select>
+              </label>
+              <div class="set-grid">
+                <label>
+                  Reps
+                  <input name="reps" type="number" min="0" step="1" inputmode="numeric" required>
+                </label>
+                <label>
+                  Weight kg
+                  <input name="weight" type="number" min="0" step="0.01" inputmode="decimal">
+                </label>
+              </div>
+              <label>
+                Notes
+                <textarea name="notes" maxlength="1000" rows="3"></textarea>
+              </label>
+              <button class="button-primary" type="submit">Log workout</button>
+            </form>
+
+            <div>
+              <div class="list-header">
+                <h3>Recent workouts</h3>
+              </div>
+              <div id="workout-list" class="workout-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="nutrition" class="nutrition-panel screen-panel" aria-labelledby="nutrition-title">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Protein first</p>
+              <h2 id="nutrition-title">Nutrition</h2>
+            </div>
+            <button id="load-nutrition" class="button-secondary" type="button">Refresh</button>
+          </div>
+
+          <div id="nutrition-summary" class="nutrition-summary"></div>
+
+          <div class="panel-grid two-column">
+            <form id="nutrition-form" class="nutrition-form form-card">
+              <div class="form-heading">
+                <h3>Log food</h3>
+                <span>Protein is the priority</span>
+              </div>
+              <label>
+                Date
+                <input name="logDate" type="date" required>
+              </label>
+              <label>
+                Meal
+                <select name="mealType" required>
+                  <option value="breakfast">Breakfast</option>
+                  <option value="lunch">Lunch</option>
+                  <option value="dinner">Dinner</option>
+                  <option value="snack">Snack</option>
+                </select>
+              </label>
+              <label>
+                Food
+                <input name="foodName" type="text" maxlength="160" placeholder="Chicken rice bowl" required>
+              </label>
+              <div class="metric-grid">
+                <label class="priority-field">
+                  Protein g
+                  <input name="protein" type="number" min="0" step="0.01" inputmode="decimal">
+                </label>
+                <label>
+                  Calories
+                  <input name="calories" type="number" min="0" step="1" inputmode="numeric">
+                </label>
+                <label>
+                  Carbs g
+                  <input name="carbohydrates" type="number" min="0" step="0.01" inputmode="decimal">
+                </label>
+                <label>
+                  Fat g
+                  <input name="fat" type="number" min="0" step="0.01" inputmode="decimal">
+                </label>
+              </div>
+              <label>
+                Notes
+                <textarea name="notes" maxlength="1000" rows="3"></textarea>
+              </label>
+              <button class="button-primary protein-action" type="submit">Log food</button>
+            </form>
+
+            <div>
+              <div class="list-header">
+                <h3>Recent food</h3>
+              </div>
+              <div id="nutrition-list" class="nutrition-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="goals" class="goal-panel screen-panel" aria-labelledby="goal-title">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Targets</p>
+              <h2 id="goal-title">Goals</h2>
+            </div>
+            <button id="load-goals" class="button-secondary" type="button">Refresh</button>
+          </div>
+
+          <div class="panel-grid two-column">
+            <form id="goal-form" class="goal-form form-card">
+              <div class="form-heading">
+                <h3>Create goal</h3>
+                <span>Strength and nutrition targets</span>
+              </div>
+              <label>
+                Goal type
+                <select name="goalType" required>
+                  <option value="workout_frequency">Workout frequency</option>
+                  <option value="strength">Strength</option>
+                  <option value="nutrition">Nutrition</option>
+                  <option value="body_weight">Body weight</option>
+                  <option value="custom">Custom</option>
+                </select>
+              </label>
+              <label>
+                Title
+                <input name="title" type="text" maxlength="160" placeholder="Train 4 times per week" required>
+              </label>
+              <label>
+                Metric
+                <select name="targetMetric" required>
+                  <option value="weekly_workout_count">Weekly workout count</option>
+                  <option value="workout_count">Workout count</option>
+                  <option value="daily_calories">Daily calories</option>
+                  <option value="body_weight">Body weight</option>
+                  <option value="custom_value">Custom value</option>
+                </select>
+              </label>
+              <div class="goal-grid">
+                <label>
+                  Target
+                  <input name="targetValue" type="number" min="0.01" step="0.01" inputmode="decimal" required>
+                </label>
+                <label>
+                  Baseline
+                  <input name="currentBaseline" type="number" min="0" step="0.01" inputmode="decimal">
+                </label>
+                <label>
+                  Start
+                  <input name="startDate" type="date" required>
+                </label>
+                <label>
+                  Target date
+                  <input name="targetDate" type="date">
+                </label>
+              </div>
+              <button class="button-primary" type="submit">Create goal</button>
+            </form>
+
+            <div>
+              <form id="goal-checkin-form" class="goal-form form-card compact-form">
+                <div class="form-heading">
+                  <h3>Check-in</h3>
+                  <span>Update measurable goals</span>
+                </div>
+                <label>
+                  Goal
+                  <select name="goalId" id="goal-checkin-select" required></select>
+                </label>
+                <div class="goal-grid">
+                  <label>
+                    Date
+                    <input name="checkInDate" type="date" required>
+                  </label>
+                  <label>
+                    Value
+                    <input name="value" type="number" min="0" step="0.01" inputmode="decimal" required>
+                  </label>
+                </div>
+                <label>
+                  Notes
+                  <textarea name="notes" maxlength="1000" rows="3"></textarea>
+                </label>
+                <button class="button-secondary" type="submit">Log check-in</button>
+              </form>
+              <div id="goal-list" class="goal-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="ai-coach" class="ai-panel screen-panel" aria-labelledby="ai-title">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Advisory feedback</p>
+              <h2 id="ai-title">AI Coach</h2>
+            </div>
+            <button id="load-ai-feedback" class="button-secondary" type="button">Refresh</button>
+          </div>
+
+          <div class="panel-grid two-column">
+            <form id="ai-feedback-form" class="ai-feedback-form form-card">
+              <div class="form-heading">
+                <h3>Ask for feedback</h3>
+                <span>Use recent training, nutrition, and goals</span>
+              </div>
+              <label>
+                Feedback type
+                <select name="requestType" required>
+                  <option value="general">Training + nutrition</option>
+                  <option value="workout">Workout review</option>
+                  <option value="nutrition">Nutrition review</option>
+                  <option value="goals">Goal strategy</option>
+                </select>
+              </label>
+              <label>
+                Question
+                <textarea name="question" maxlength="1000" rows="4" placeholder="What should I focus on this week?" required></textarea>
+              </label>
+              <fieldset class="ai-context-options">
+                <legend>Include context</legend>
+                <label>
+                  <input name="includeWorkouts" type="checkbox" checked>
+                  Workouts
+                </label>
+                <label>
+                  <input name="includeNutrition" type="checkbox" checked>
+                  Nutrition
+                </label>
+                <label>
+                  <input name="includeGoals" type="checkbox" checked>
+                  Goals
+                </label>
+              </fieldset>
+              <p class="form-note">AI Coach is advisory and should be treated as guidance, not medical advice.</p>
+              <button class="button-primary" type="submit">Request feedback</button>
+            </form>
+
+            <div>
+              <div class="list-header">
+                <h3>Feedback history</h3>
+              </div>
+              <div id="ai-feedback-list" class="ai-feedback-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="profile" class="session-panel screen-panel" aria-labelledby="profile-title">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Account</p>
+              <h2 id="profile-title">Profile and session</h2>
+            </div>
+          </div>
+          <pre id="current-user">Not signed in</pre>
+          <div class="quick-actions">
+            <button id="refresh-session" class="button-secondary" type="button">Refresh session</button>
+            <button id="logout" class="button-danger" type="button">Logout</button>
+          </div>
+        </section>
+      </div>
+
+      <nav class="mobile-bottom-nav" aria-label="Primary">
+        <a href="#dashboard">Dashboard</a>
+        <a href="#workouts">Workouts</a>
+        <a href="#nutrition">Nutrition</a>
+        <a href="#dashboard">Progress</a>
+        <a href="#ai-coach">More</a>
+      </nav>
     </section>
   </main>
   <script type="module" src="/js/auth/auth.js"></script>

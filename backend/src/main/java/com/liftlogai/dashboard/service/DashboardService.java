@@ -1,6 +1,7 @@
 package com.liftlogai.dashboard.service;
 
 import com.liftlogai.auth.security.AuthenticatedUser;
+import com.liftlogai.ai.service.AiFeedbackService;
 import com.liftlogai.common.dto.PagedResponse;
 import com.liftlogai.dashboard.dto.DashboardSummaryResponse;
 import com.liftlogai.goal.service.GoalService;
@@ -20,17 +21,20 @@ public class DashboardService {
     private final WorkoutService workoutService;
     private final NutritionService nutritionService;
     private final GoalService goalService;
+    private final AiFeedbackService aiFeedbackService;
 
     public DashboardService(
             WorkoutRepository workoutRepository,
             WorkoutService workoutService,
             NutritionService nutritionService,
-            GoalService goalService
+            GoalService goalService,
+            AiFeedbackService aiFeedbackService
     ) {
         this.workoutRepository = workoutRepository;
         this.workoutService = workoutService;
         this.nutritionService = nutritionService;
         this.goalService = goalService;
+        this.aiFeedbackService = aiFeedbackService;
     }
 
     @Transactional(readOnly = true)
@@ -48,7 +52,7 @@ public class DashboardService {
                 recentWorkouts.items(),
                 nutritionService.dailySummary(authenticatedUser, today),
                 goalService.activeGoals(authenticatedUser),
-                null
+                aiFeedbackService.latestFeedback(authenticatedUser)
         );
     }
 }

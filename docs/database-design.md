@@ -208,13 +208,14 @@ Key attributes:
 - id
 - goal_id
 - check_in_date
-- value
+- check_in_value
 - notes
 - created_at
 
 Notes:
 
 - Useful for goals that are not fully derivable from workout or nutrition records.
+- The physical column uses `check_in_value` to avoid reserved-word conflicts across MySQL and H2.
 
 ### AI Feedback Request
 
@@ -224,15 +225,14 @@ Key attributes:
 
 - id
 - user_id
-- prompt_summary
-- feedback
-- created_at
-
-Additional recommended attributes:
-
 - request_type
 - provider
 - status
+- prompt_summary
+- summary
+- recommendations
+- feedback
+- created_at
 - completed_at
 - error_code
 
@@ -242,6 +242,7 @@ Notes:
 - Minimum required fields are `id`, `userId`, `promptSummary`, `feedback`, and `createdAt`.
 - OpenAI is the first provider, but provider-specific raw responses should not be stored unless a clear operational need and privacy policy exist.
 - Avoid storing full sensitive prompts; store a safe prompt summary for history.
+- `summary` and `recommendations` are normalized application fields derived from the provider response.
 
 ## Relationships
 
@@ -266,7 +267,7 @@ The global `exercise` table stores the shared exercise library. Workout details 
 
 Nutrition logs are date-based entries owned by a user. Dashboard and daily total views aggregate these records by user and date.
 
-Goals are user-owned records that define target intent. Goal progress may be calculated from workouts, nutrition logs, check-ins, or goal-specific source data depending on goal type.
+Goals are user-owned records that define target intent. Goal progress may be calculated from workouts, nutrition logs, check-ins, or goal-specific source data depending on goal type. Dashboard summaries read active goals through the goal service so progress rules remain centralized.
 
 AI feedback records are linked to users and store feedback history indefinitely for now. Each record must include a safe prompt summary and feedback content. Provider metadata can be stored to support OpenAI-first operations while preserving the provider abstraction for Gemini and Claude later.
 
@@ -335,7 +336,7 @@ AI feedback records are linked to users and store feedback history indefinitely 
 
 ## Implementation Notes
 
-Milestone 1 created the authentication tables needed for registration, login, and refresh-token tracking. Milestone 2 adds the global `exercises` table plus `workouts`, `workout_exercises`, and `workout_sets`. Milestone 3 adds `nutrition_logs`.
+Milestone 1 created the authentication tables needed for registration, login, and refresh-token tracking. Milestone 2 adds the global `exercises` table plus `workouts`, `workout_exercises`, and `workout_sets`. Milestone 3 adds `nutrition_logs`. Milestone 4 adds `goals` and `goal_check_ins`. Milestone 5 adds `ai_feedback`.
 
 The implementation currently uses Spring SQL initialization so local Docker, MySQL, and H2 integration tests share one simple schema path. Formal migration tooling should be introduced before production deployment or the next schema-heavy milestone so future schema changes are versioned consistently.
 

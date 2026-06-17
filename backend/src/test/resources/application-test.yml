@@ -15,3 +15,5 @@ liftlog:
   auth:
     token-secret: test-secret-with-at-least-thirty-two-characters
     cookie-secure: true
+  ai:
+    provider: stub
